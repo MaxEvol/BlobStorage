@@ -1,0 +1,56 @@
+﻿@page
+@model BlobStorage.Views.UploadArquivos.IndexModel
+@{
+}
+@using (Html.BeginForm("EnviaImagem", "UploadArquivos", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <fieldset class="form-horizontal border">
+        <div class="form-group">
+            <div class="col-md-10">
+                <input type="file" name="arquivo" />
+            </div>
+        </div>
+        <div class="form-group">
+            &nbsp;
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Enviar" class="btn-primary" />
+            </div>
+
+        </div>
+    </fieldset>
+
+}
+
+@{
+    <fieldset class="form-horizontal border">
+        <legend>Arquivos Já Enviado</legend>
+        <table class="table">
+            @foreach (var item in ViewBag.listaArquivos)
+            {
+                <tr>
+                    <td>
+                        <a href="@item[1]" target="_blank">
+                            @item[0]
+                        </a>
+                    </td>
+                    <td><a href="#" id="@item[0]" onclick="Apagar(this.id)"> APAGAR</a></td>
+                </tr>
+            }
+        </table>
+    </fieldset>
+
+
+}
+<script type="text/javascript">
+   async function Apagar(id) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", "/UploadArquivos/ApagaArquivo/?arquivo=" + id, true);
+       xhttp.send();
+       await sleep(500);
+        location.reload();
+    }
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+</script>
